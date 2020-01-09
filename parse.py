@@ -14,18 +14,6 @@ def apply_parse(url):  # берет XML файл из урл(или файла) 
     return list_alc
 
 
-def parse_response_rests(xml: str):
-    list_urls = []
-    root = ET.fromstring(xml)
-    for child in root:
-        if child.tag == 'url':
-            list_urls.append(child.text)
-        else:
-            continue
-    print(list_urls)
-    return list_urls
-
-
 def alc_name_n_ect(list_alc: list, tag: str):
     for iteration in range(len(list_alc)):
         if tag == 'rst:InformF2RegId':
