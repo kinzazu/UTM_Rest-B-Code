@@ -1,23 +1,55 @@
 import requests
+from parse import parse_response_rests as prr
+import time
 from xml_create import compilation_doc
-from requests.auth import HTTPBasicAuth
 
 
-def get_orders(ip_port):
+def get_sent_doc(ip_port):
     url = ip_port
     xml_container = requests.get(url)
     print(xml_container.text)
     return xml_container
 
 
-def send_response(ip_port, xml_string):
+def send_response(ip_port:str, xml_string:str):
     fake_xml = {'xml_file': ('QueryRestBCode.xml', xml_string)}
-    url = 'http://' + ip_port + '/opt/in/QueryRestBCode'
+    url = 'http://{}/opt/in/QueryRestBCode'.format(ip_port)
     print(url)
     poster = requests.post(url, files=fake_xml)
     print(poster.status_code, poster.text)
 
 
-# get_orders('http://109.226.229.29:4545/opt/in')
-# xml = compilation_doc('020000190211', 'FB-000001952584827')
-# send_response('109.226.229.29:4545', xml)
+def send_ttn_response(ip_port:str, xml_string:str):
+    fake_xml = {'xml_file': ('QueryResendDoc.xml', xml_string)}
+    url = 'http://{}/opt/in/QueryResendDoc'.format(ip_port)
+    # print(url)
+    poster = requests.post(url, files=fake_xml)
+    print(poster.status_code)
+
+
+# get_rests_response – запрос всех ответов УТМ на запросы марок по справке Б. Нужно для проверки наличия марок в справке
+# rests_bcode – запрос на конкретный ответ по остаткам марки. Далее парс, -
+# - если файл пустой, то делаем DELETE для удаления из БД УТМ.
+# большая проблема, что он удаляет документы, при данном запросе.
+# нужно это либо решать, либо вообще другой метод придумывать.
+def get_rests_response(ip_port: str):
+    zapros = requests.get('http://{}/opt/out/ReplyRestBCode'.format(ip_port))
+    return zapros.text
+
+
+def rest_bcode(list_response: list):
+    list_of_xml = []
+    for element in list_response:
+        post_element = requests.post(element)
+        print(post_element)
+        list_of_xml.append(post_element.text)
+        # time.sleep(5)
+    return list_of_xml
+
+# 212.119.253.130:8081 - Green Villa    109.226.229.29:4545 - Brugge
+# xml = compilation_doc('020000190211', 'FB-000002712629120')
+# get_sent_doc('http://109.226.229.29:4545/opt/in')
+# # send_response('109.226.229.29:4545', xml)
+# xml_string = get_rests_response('212.119.253.130:8081')
+# container = rest_bcode(prr(xml_string))
+# print(container)
