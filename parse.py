@@ -6,7 +6,6 @@ def apply_parse(url):  # берет XML файл из урл(или файла) 
     tree = ET.parse(url)
     root = tree.getroot()
     fsrar_id = root[0][0].text
-    print('ФСРАР обрабатываемого документа = ', fsrar_id)
     rests = root[1][0][1]
     for child in rests:
         list_alc.append(child)
