@@ -5,6 +5,7 @@ def create_db(db_name: str):
     connect = sqlite3.connect(db_name)
     cursor = connect.cursor()
     cursor.execute('''CREATE TABLE alc_data (name text, code text, form_b text, ready integer, have_form int)''')
+    cursor.execute('''CREATE TABLE Marks (form_b text, mark text)''')
     connect.commit()
     connect.close()
 

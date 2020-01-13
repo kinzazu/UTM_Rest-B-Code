@@ -20,7 +20,7 @@ def compilation_doc(fsrar_id, form_b):
     value.text = form_b
     message = ET.tostring(root, "utf-8")
     # document = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' + message.decode('utf-8')
-    document = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'.encode('utf-8')
+    document: bytes = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'.encode('utf-8')
     document += message
     return document
 

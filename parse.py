@@ -1,5 +1,4 @@
 import xml.etree.ElementTree as ET
-import sqlite3
 
 
 def apply_parse(url):  # берет XML файл из урл(или файла) и парсит его.
@@ -26,7 +25,7 @@ def parse_response_rests(xml: str):
     return list_urls
 
 
-def alc_name_n_ect(list_alc: list, tag: str):
+def alc_name_n_ect(list_alc: list, tag: str): # возращает имя/справку_Б/количество в зависимости от переменной tag
     for iteration in range(len(list_alc)):
         if tag == 'rst:InformF2RegId':
             # print('form.b', list_alc[2].text)
@@ -51,13 +50,41 @@ class AlcForm:
         self.alc_form = alc_name_n_ect(list_acl, 'rst:InformF2RegId')
 
 
-def creating_list_of_class(class_object, stock_list ):
+def creating_list_of_class(class_object, stock_list):
     alc_list = []
     for x in stock_list:
         alc_list.append(class_object(x))
     return alc_list
 
 
+def parse_response_list(xml): #анлиз для файла со ссылками
+    xml_link_list = []
+    tree = ET.parse(xml)
+    root = tree.getroot()
+    for link in root:
+        xml_link_list.append(link.text)
+    xml_link_list.pop()
+    print(xml_link_list)
+
+# парсит лист ссылок хмл, в которых могут быть марки, а может и не быть. после должна возращать либо марки либо ноль
+# которые падают в бд
+def parse_element_from_list(xml):   # изменить с xml на url потом и запрашивать документы
+    tree = ET.parse(xml)
+    root = tree.getroot()
+    #
+    try:
+        for tag in root[1][0][2]:
+           print(tag.text)
+    # вернуть тупл с проблеькиком на конце и вернуть марки в одну таблицу, а во второй таблице поменять значение
+    #  формБ = 1
+    except IndexError:
+        print('изменить значение "Have FORMB" на 0!')
+
+
+parse_element_from_list('xml/sample_with_mark.xml')
+
+
+# 'xml/sample_with_mark.xml'
 # пример использования, который нужно перенести в мейн.
 # def insert_data(db_name: str, ins_alc_class_list: list):  # если повторить, на заполненных значениях, то данные задублируются, аккуратне!
 #     connect = sqlite3.connect(db_name)                    # сделал условие, вроде избавил его от дублирования.
