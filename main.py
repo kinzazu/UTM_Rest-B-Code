@@ -30,12 +30,12 @@ def main_menu(choose):
             print('---- {} ----'.format(form_b))
             xml = cd('020000190211', form_b)
             connectionUTM.send_response(ip=ip, port=port, xml_string=xml)
-            for i in range(10):
+            for i in range(660):
                 print('\r{}/660 сек.'.format(i), end='')
                 time.sleep(1)
             DB_solver.change_status(db_name, form_b)
             if num % 25 == 0:
-               connectionUTM.rest_bcode(parse_response_list(connectionUTM.get_rests_response(ip, port)), db_name)
+                connectionUTM.rest_bcode(parse_response_list(connectionUTM.get_rests_response(ip, port)), db_name)
 
     elif choose == 4:
         sys.exit(0)
