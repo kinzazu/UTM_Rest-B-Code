@@ -64,13 +64,13 @@ def log_file(event):  # file path or just name if it's in folder.
     file.close()
 
 
-def save_xml(xml_text, type: int):
+def save_xml(xml_text, type_file: int):
     time = datetime.datetime.now()
     print(time)
-    if type == 1:
+    if type_file == 1:
         xml_file_path = 'xml/{}-{}-{} T{}-{}-{}-list.xml'.format(time.year, time.month, time.day,
                                                                  time.hour, time.day, time.second)
-    elif type == 2:
+    elif type_file == 2:
         xml_file_path = 'xml/{}-{}-{} T{}-{}-{}-element.xml'.format(time.year, time.month, time.day,
                                                                     time.hour, time.day, time.second)
     else:
