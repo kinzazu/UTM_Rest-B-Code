@@ -1,6 +1,6 @@
 import requests
 from log_n_save2file import save_xml, config_file
-
+from parse import parse_element_from_list
 import time
 from xml_create import compilation_doc
 
@@ -35,18 +35,16 @@ def send_ttn_response(ip: str, port: str, xml_string):
 # нужно это либо решать, либо вообще другой метод придумывать.
 def get_rests_response(ip, port: str):
     zapros = requests.get('http://{}:{}/opt/out/ReplyRestBCode'.format(ip, port))
-    save_xml(zapros.text)
+    save_xml(zapros.text, 1)
     return zapros.text
 
 
-def rest_bcode(list_response: list):
-    list_of_xml = []
+def rest_bcode(list_response: list, db_name):
     for element in list_response:
         post_element = requests.post(element)
-        print(post_element)
-        list_of_xml.append(post_element.text)
+        save_xml(post_element.text, 2)
+        parse_element_from_list(post_element.text, db_name)
         # time.sleep(5)
-    return list_of_xml
 
 
 

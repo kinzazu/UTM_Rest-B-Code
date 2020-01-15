@@ -50,11 +50,17 @@ def log_file(event):  # file path or just name if it's in folder.
     file.close()
 
 
-def save_xml(xml_text):
+def save_xml(xml_text, type: int):
     time = datetime.datetime.now()
     print(time)
-    xml_file_path = 'xml/{}-{}-{} T{}-{}-{}.xml'.format(time.year, time.month, time.day,
-                                                        time.hour, time.day, time.second)
+    if type == 1:
+        xml_file_path = 'xml/{}-{}-{} T{}-{}-{}-list.xml'.format(time.year, time.month, time.day,
+                                                                 time.hour, time.day, time.second)
+    elif type == 2:
+        xml_file_path = 'xml/{}-{}-{} T{}-{}-{}-element.xml'.format(time.year, time.month, time.day,
+                                                                    time.hour, time.day, time.second)
+    else:
+        print("ошибка в типе файла для сохранения xml")
     while True:
         try:
             file = open(xml_file_path, 'w')

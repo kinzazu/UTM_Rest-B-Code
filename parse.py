@@ -1,11 +1,11 @@
 import xml.etree.ElementTree as ET
-
+from DB_solver import change_have_form
+from log_n_save2file import log_file
 
 def apply_parse(url):  # берет XML файл из урл(или файла) и парсит его.
     list_alc = []
     tree = ET.parse(url)
     root = tree.getroot()
-    fsrar_id = root[0][0].text
     rests = root[1][0][1]
     for child in rests:
         list_alc.append(child)
@@ -58,29 +58,32 @@ def creating_list_of_class(class_object, stock_list):
 
 def parse_response_list(xml): #анлиз для файла со ссылками
     xml_link_list = []
-    tree = ET.parse(xml)
-    root = tree.getroot()
+    # tree = ET.parse(xml)
+    root = ET.fromstring(xml)
     for link in root:
         xml_link_list.append(link.text)
     xml_link_list.pop()
     print(xml_link_list)
+    return xml_link_list
+
 
 # парсит лист ссылок хмл, в которых могут быть марки, а может и не быть. после должна возращать либо марки либо ноль
 # которые падают в бд
-def parse_element_from_list(xml):   # изменить с xml на url потом и запрашивать документы
-    tree = ET.parse(xml)
-    root = tree.getroot()
-    #
+def parse_element_from_list(xml, db_name):   # изменить с xml на url потом и запрашивать документы
+
+    root = ET.fromstring(xml)
+    form_b = root[1][0][1].text
     try:
         for tag in root[1][0][2]:
-           print(tag.text)
-    # вернуть тупл с проблеькиком на конце и вернуть марки в одну таблицу, а во второй таблице поменять значение
-    #  формБ = 1
+            print(tag.text)
+            change_have_form(db_name, form_b, 1, tag.text)
+            event = f'Added mark {tag.text} for {form_b}'
+            log_file(event)
     except IndexError:
         print('изменить значение "Have FORMB" на 0!')
+        change_have_form(db_name, form_b, 0, None)
 
 
-parse_element_from_list('xml/sample_with_mark.xml')
 
 
 # 'xml/sample_with_mark.xml'

@@ -11,8 +11,8 @@ def compilation_doc(fsrar_id, form_b):
     fsrar = ET.SubElement(owner_query, 'ns:FSRAR_ID')
     fsrar.text = fsrar_id
     doc = ET.SubElement(root, 'ns:Document')
-    query_restB = ET.SubElement(doc, "ns:QueryRestBCode")
-    parameters = ET.SubElement(query_restB, 'qp:Parameters')
+    query_rest_b = ET.SubElement(doc, "ns:QueryRestBCode")
+    parameters = ET.SubElement(query_rest_b, 'qp:Parameters')
     parameter = ET.SubElement(parameters, "qp:Parameter")
     name = ET.SubElement(parameter, 'qp:Name')
     name.text = "ФОРМА2"
