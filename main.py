@@ -14,7 +14,7 @@ def main_menu(choose):
     ip = lnf.config_file(config_path, 'ip')
     port = lnf.config_file(config_path, 'port')
     db_name = f"DB/{lnf.config_file(config_path, 'db_name')}"
-    timeout = lnf.config_file(config_path,'timeout')
+    timeout = lnf.config_file(config_path, 'timeout')
     if choose == 1:
         list_of_stock = apply_parse('xml/24398.xml')
         class_list = creating_list_of_class(AlcForm, list_of_stock)
@@ -32,7 +32,7 @@ def main_menu(choose):
             print('---- {} ----'.format(form_b))
             xml = cd('020000190211', form_b)
             connectionUTM.send_response(ip=ip, port=port, xml_string=xml)
-            for i in range(timeout):
+            for i in range(int(timeout)):
                 print('\r{}/660 сек.'.format(i), end='')
                 time.sleep(1)
             DB_solver.change_status(db_name, form_b)
