@@ -1,5 +1,7 @@
 import sqlite3
 
+import log_n_save2file as lnf
+
 
 def create_db(db_name: str):
     connect = sqlite3.connect(db_name)
@@ -42,7 +44,7 @@ def insert_data(db_name: str, ins_alc_class_list: list):    # Вставляет
     cursor = connect.cursor()
     cursor.execute('''PRAGMA table_info(alc_data)''')
     result = cursor.fetchall()
-    if len(result) == 6:
+    if len(result) == 5:
         for data in ins_alc_class_list:
             symbol = (data.alc_form,)
 
@@ -58,7 +60,14 @@ def insert_data(db_name: str, ins_alc_class_list: list):    # Вставляет
                     continue
             connect.commit()
     else:
-        print('DB is old check if "HAVE_FORM" COLUMN EXIST!')
+        lnf.log_file("ошибка в записи в таблицу alc_data")
+        print('DB is old. check if "HAVE_mark" COLUMN EXIST! \n attempt to add columns')
+        try:
+            cursor.execute('''ALTER TABLE alc_data ADD COLUMN have_mark INTEGER''')
+            connect.commit()
+        except sqlite3.OperationalError as e:
+            print(e.args[0])
+            a = input("ошибка в бд, нужны проверки... нажмать любую клавишу, чтобы выйти")
 
 
 def change_status(db_name: str, formb: str):

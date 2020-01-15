@@ -1,6 +1,6 @@
 import configparser
-import os
 import datetime
+import os
 
 
 def config_file(file_path, request_attribute):
@@ -10,17 +10,31 @@ def config_file(file_path, request_attribute):
         try:
             return config['DB']['name']
         except KeyError:
-            print("ошибка в чтении конфиг файла при обращении DB -> Name")
+            event = "ошибка в чтении конфиг файла при обращении DB -> Name"
+            print(event)
+            log_file(event)
     elif request_attribute == 'ip':
         try:
             return config['TCP']['ip']
         except KeyError:
-            print("ошибка в чтении конфиг файла при обращении TCP -> ip")
+            event = "ошибка в чтении конфиг файла при обращении TCP -> ip"
+            print(event)
+            log_file(event)
     elif request_attribute == 'port':
         try:
             return config['TCP']['port']
         except KeyError:
-            print("ошибка в чтении конфиг файла при обращении TCP -> ip")
+            event = "ошибка в чтении конфиг файла при обращении TCP -> port"
+            print(event)
+            log_file(event)
+    elif request_attribute == 'timeout':
+        try:
+            return config['TIME']['timeout']
+        except KeyError:
+            event = "ошибка в чтении конфиг файла при обращении TIME -> timeout"
+            print(event)
+            log_file(event)
+
     else:
         print('неправильно указан запрос к .ini файлу!')
 
@@ -50,13 +64,13 @@ def log_file(event):  # file path or just name if it's in folder.
     file.close()
 
 
-def save_xml(xml_text, type: int):
+def save_xml(xml_text, type_file: int):
     time = datetime.datetime.now()
     print(time)
-    if type == 1:
+    if type_file == 1:
         xml_file_path = 'xml/{}-{}-{} T{}-{}-{}-list.xml'.format(time.year, time.month, time.day,
                                                                  time.hour, time.day, time.second)
-    elif type == 2:
+    elif type_file == 2:
         xml_file_path = 'xml/{}-{}-{} T{}-{}-{}-element.xml'.format(time.year, time.month, time.day,
                                                                     time.hour, time.day, time.second)
     else:
