@@ -1,10 +1,11 @@
-import log_n_save2file
+import log_n_save2file as lnf
 import connectionUTM
 from xml_create import compilation_doc as cd
 import DB_solver
 from parse import *
 import sys
 import time
+import sqlite3
 
 
 def main_menu(choose):
@@ -12,32 +13,30 @@ def main_menu(choose):
     ip = lnf.config_file(config_path, 'ip')
     port = lnf.config_file(config_path, 'port')
     db_name = f"DB/{lnf.config_file(config_path, 'db_name')}"
-    xml_file = f"XML/{lnf.config_file(config_path, 'xml_file')}"
     if choose == 1:
-        list_of_stock = apply_parse(xml_file)
+        list_of_stock = apply_parse('xml/24398.xml')
         class_list = creating_list_of_class(AlcForm, list_of_stock)
-
         try:
-            DB_solver.create_db(name_of_db)
-            DB_solver.insert_data(name_of_db, class_list)
+            DB_solver.create_db(db_name)
+            DB_solver.insert_data(db_name, class_list)
         except sqlite3.OperationalError:
-            print("!DB is already exist, tring to update data!")
-            DB_solver.insert_data(name_of_db, class_list)
+            print("!DB is already exist, trying to update data!")
+            DB_solver.insert_data(db_name, class_list)
 
-        sum_collums = DB_solver.get_data_db(name_of_db, 'summary_sql')
-        for i in range(sum_collums):
-            print('\n{}/{} :'.format(i, sum_collums))
-            form_b =DB_solver.get_data_db(name_of_db, 'form_b_sql')
+        sum_columns = DB_solver.get_data_db(db_name, 'summary_sql')
+        for num in range(sum_columns):
+            print('\n{}/{} :'.format(num, sum_columns))
+            form_b = DB_solver.get_data_db(db_name, 'form_b_sql')
             print('---- {} ----'.format(form_b))
             xml = cd('020000190211', form_b)
-
             connectionUTM.send_response(ip=ip, port=port, xml_string=xml)
-            for i in range(660):
+            for i in range(10):
                 print('\r{}/660 сек.'.format(i), end='')
                 time.sleep(1)
             DB_solver.change_status(db_name, form_b)
             if num % 25 == 0:
-                connectionUTM.rest_bcode(parse_response_list(connectionUTM.get_rests_response(ip, port)), db_name)
+               connectionUTM.rest_bcode(parse_response_list(connectionUTM.get_rests_response(ip, port)), db_name)
+
     elif choose == 4:
         sys.exit(0)
     elif choose == 2:

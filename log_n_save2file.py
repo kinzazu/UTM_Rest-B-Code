@@ -1,4 +1,3 @@
-
 import configparser
 import os
 import datetime
@@ -22,14 +21,32 @@ def config_file(file_path, request_attribute):
             return config['TCP']['port']
         except KeyError:
             print("ошибка в чтении конфиг файла при обращении TCP -> ip")
-    elif request_attribute == 'xml_file':
-        try:
-            return config['XML']['name']
-        except KeyError:
-            print("ошибка в чтении конфиг файла при обращении TCP -> ip")
     else:
-        print('OK')
-    file.write("\n some_function ")
+        print('неправильно указан запрос к .ini файлу!')
+
+
+def create_log_file():
+    txt_file_path = 'Logs/{}.txt'.format(str(datetime.date.today()))
+    while True:
+        try:
+            file = open(txt_file_path, 'x')
+
+        except FileExistsError:
+            file = open(txt_file_path, 'a')
+            break
+        except FileNotFoundError:
+            path = os.getcwd()
+            os.mkdir('{}\\Logs'.format(path))
+            print('created directory')
+            continue
+        else:
+            break
+    return file
+
+
+def log_file(event):  # file path or just name if it's in folder.
+    file = create_log_file()
+    file.write(f"\n {datetime.datetime.now().isoformat(timespec= 'seconds')} {event}")
     file.close()
 
 
@@ -56,3 +73,6 @@ def save_xml(xml_text, type: int):
             break
     file.write(xml_text)
     file.close
+
+
+
