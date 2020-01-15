@@ -3,21 +3,27 @@ from log_n_save2file import save_xml, config_file
 from parse import parse_element_from_list
 import time
 from xml_create import compilation_doc
+from requests.auth import HTTPBasicAuth
 
 
-def get_sent_doc(ip_port):
+def get_orders(ip_port):
     url = ip_port
     xml_container = requests.get(url)
     print(xml_container.text)
     return xml_container
 
 
+
 def send_response(ip: str, port: str, xml_string):
     fake_xml = {'xml_file': ('QueryRestBCode.xml', xml_string)}
     url = 'http://{}:{}/opt/in/QueryRestBCode'.format(ip, port)
+def send_response(ip_port, xml_string):
+    fake_xml = {'xml_file': ('QueryRestBCode.xml', xml_string)}
+    url = 'http://' + ip_port + '/opt/in/QueryRestBCode'
     print(url)
     poster = requests.post(url, files=fake_xml)
     print(poster.status_code, poster.text)
+
 
 
 def send_ttn_response(ip: str, port: str, xml_string):
@@ -55,8 +61,9 @@ def rest_bcode(list_response: list, db_name):
 # xml_string = get_rests_response('212.119.253.130:8081')
 # container = rest_bcode(prr(xml_string))
 # print(container)
-
-
 # ip = config_file('ini/conf.ini','ip')
 # # port = config_file('ini/conf.ini','port')
 # # get_rests_response(ip,port)
+# get_orders('http://109.226.229.29:4545/opt/in')
+# xml = compilation_doc('020000190211', 'FB-000001952584827')
+# send_response('109.226.229.29:4545', xml)

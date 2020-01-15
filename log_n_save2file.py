@@ -21,6 +21,16 @@ def config_file(file_path, request_attribute):
             return config['TCP']['port']
         except KeyError:
             print("ошибка в чтении конфиг файла при обращении TCP -> ip")
+
+
+
+def log_file(file_path): # file path or just name if it's in folder.
+    try:
+        file = open(file_path, 'x')
+    except FileExistsError:
+        print('file already exist')
+        file = open(file_path, 'a')
+
     else:
         print('неправильно указан запрос к .ini файлу!')
 
@@ -75,4 +85,6 @@ def save_xml(xml_text, type: int):
     file.close
 
 
+
+# log_file('log_files/1223.txt')
 

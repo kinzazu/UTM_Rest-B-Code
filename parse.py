@@ -25,6 +25,7 @@ def parse_response_rests(xml: str):
 
 
 def alc_name_n_ect(list_alc: list, tag: str): # возращает имя/справку_Б/количество в зависимости от переменной tag
+def alc_name_n_ect(list_alc: list, tag: str):
     for iteration in range(len(list_alc)):
         if tag == 'rst:InformF2RegId':
             # print('form.b', list_alc[2].text)
