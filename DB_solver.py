@@ -1,5 +1,7 @@
 import sqlite3
 
+import log_n_save2file as lnf
+
 
 def create_db(db_name: str):
     connect = sqlite3.connect(db_name)
@@ -58,7 +60,8 @@ def insert_data(db_name: str, ins_alc_class_list: list):    # Вставляет
                     continue
             connect.commit()
     else:
-        print('DB is old check if "HAVE_mark" COLUMN EXIST! \n attempt to add columns')
+        lnf.log_file("ошибка в записи в таблицу alc_data")
+        print('DB is old. check if "HAVE_mark" COLUMN EXIST! \n attempt to add columns')
         try:
             cursor.execute('''ALTER TABLE alc_data ADD COLUMN have_mark INTEGER''')
             connect.commit()

@@ -1,11 +1,12 @@
-import log_n_save2file as lnf
-import connectionUTM
-from xml_create import compilation_doc as cd
-import DB_solver
-from parse import *
+import sqlite3
 import sys
 import time
-import sqlite3
+
+import DB_solver
+import connectionUTM
+import log_n_save2file as lnf
+from parse import *
+from xml_create import compilation_doc as cd
 
 
 def main_menu(choose):
@@ -13,6 +14,7 @@ def main_menu(choose):
     ip = lnf.config_file(config_path, 'ip')
     port = lnf.config_file(config_path, 'port')
     db_name = f"DB/{lnf.config_file(config_path, 'db_name')}"
+    timeout = lnf.config_file(config_path,'timeout')
     if choose == 1:
         list_of_stock = apply_parse('xml/24398.xml')
         class_list = creating_list_of_class(AlcForm, list_of_stock)
@@ -25,12 +27,12 @@ def main_menu(choose):
 
         sum_columns = DB_solver.get_data_db(db_name, 'summary_sql')
         for num in range(sum_columns):
-            print('\n{}/{} :'.format(num, sum_columns))
+            print('\n----{}/{}---- :'.format(num, sum_columns))
             form_b = DB_solver.get_data_db(db_name, 'form_b_sql')
             print('---- {} ----'.format(form_b))
             xml = cd('020000190211', form_b)
             connectionUTM.send_response(ip=ip, port=port, xml_string=xml)
-            for i in range(660):
+            for i in range(timeout):
                 print('\r{}/660 сек.'.format(i), end='')
                 time.sleep(1)
             DB_solver.change_status(db_name, form_b)

@@ -1,8 +1,7 @@
 import requests
-from log_n_save2file import save_xml, config_file
+
+from log_n_save2file import save_xml
 from parse import parse_element_from_list
-import time
-from xml_create import compilation_doc
 
 
 def get_sent_doc(ip_port):
@@ -17,7 +16,7 @@ def send_response(ip: str, port: str, xml_string):
     url = 'http://{}:{}/opt/in/QueryRestBCode'.format(ip, port)
     print(url)
     poster = requests.post(url, files=fake_xml)
-    print(poster.status_code, poster.text)
+    print(poster.status_code)
 
 
 def send_ttn_response(ip: str, port: str, xml_string):

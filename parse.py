@@ -1,6 +1,8 @@
 import xml.etree.ElementTree as ET
+
 from DB_solver import change_have_form
 from log_n_save2file import log_file
+
 
 def apply_parse(url):  # берет XML файл из урл(или файла) и парсит его.
     list_alc = []
@@ -56,14 +58,13 @@ def creating_list_of_class(class_object, stock_list):
     return alc_list
 
 
-def parse_response_list(xml): #анлиз для файла со ссылками
+def parse_response_list(xml):  # анлиз для файла со ссылками
     xml_link_list = []
     # tree = ET.parse(xml)
     root = ET.fromstring(xml)
     for link in root:
         xml_link_list.append(link.text)
     xml_link_list.pop()
-    print(xml_link_list)
     return xml_link_list
 
 
@@ -80,7 +81,7 @@ def parse_element_from_list(xml, db_name):   # изменить с xml на url 
             event = f'Added mark {tag.text} for {form_b}'
             log_file(event)
     except IndexError:
-        print('изменить значение "Have FORMB" на 0!')
+        print('have mark = 0')
         change_have_form(db_name, form_b, 0, None)
 
 
