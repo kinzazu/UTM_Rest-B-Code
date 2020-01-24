@@ -13,6 +13,13 @@ def config_file(file_path, request_attribute):
             event = "ошибка в чтении конфиг файла при обращении DB -> Name"
             print(event)
             log_file(event)
+    if request_attribute == 'xml_file':
+        try:
+            return config['XML']['name']
+        except KeyError:
+            event = "ошибка в чтении конфиг файла при обращении XML -> Name"
+            print(event)
+            log_file(event)
     elif request_attribute == 'ip':
         try:
             return config['TCP']['ip']
@@ -34,7 +41,13 @@ def config_file(file_path, request_attribute):
             event = "ошибка в чтении конфиг файла при обращении TIME -> timeout"
             print(event)
             log_file(event)
-
+    elif request_attribute == 'fsrar_id':
+        try:
+            return config['UTM']['fsrar_id']
+        except KeyError:
+            event = "ошибка в чтении конфиг файла при обращении UTM -> fsrar_id"
+            print(event)
+            log_file(event)
     else:
         print('неправильно указан запрос к .ini файлу!')
 
@@ -66,13 +79,15 @@ def log_file(event):  # file path or just name if it's in folder.
 
 def save_xml(xml_text, type_file: int):
     time = datetime.datetime.now()
-    print(time)
+    # print(time)
     if type_file == 1:
         xml_file_path = 'xml/{}-{}-{} T{}-{}-{}-list.xml'.format(time.year, time.month, time.day,
                                                                  time.hour, time.day, time.second)
     elif type_file == 2:
         xml_file_path = 'xml/{}-{}-{} T{}-{}-{}-element.xml'.format(time.year, time.month, time.day,
                                                                     time.hour, time.day, time.second)
+    elif type_file == 3:
+        xml_file_path = 'xml/QueryFormBHistory.xml'
     else:
         print("ошибка в типе файла для сохранения xml")
     while True:
@@ -86,7 +101,4 @@ def save_xml(xml_text, type_file: int):
         else:
             break
     file.write(xml_text)
-    file.close
-
-
-
+    file.close()

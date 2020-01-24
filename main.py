@@ -10,13 +10,18 @@ from xml_create import compilation_doc as cd
 
 
 def main_menu(choose):
+    fsrar_id = lnf.config_file('ini/conf.ini','fsrar_id')
     config_path = 'ini/conf.ini'
     ip = lnf.config_file(config_path, 'ip')
     port = lnf.config_file(config_path, 'port')
     db_name = f"DB/{lnf.config_file(config_path, 'db_name')}"
     timeout = lnf.config_file(config_path, 'timeout')
+<<<<<<< Updated upstream
+=======
+    xml_path = lnf.config_file(config_path, 'xml_file')
+>>>>>>> Stashed changes
     if choose == 1:
-        list_of_stock = apply_parse('xml/24398.xml')
+        list_of_stock = apply_parse(f'xml/{xml_path}')
         class_list = creating_list_of_class(AlcForm, list_of_stock)
         try:
             DB_solver.create_db(db_name)
@@ -30,7 +35,7 @@ def main_menu(choose):
             print('\n----{}/{}---- :'.format(num, sum_columns))
             form_b = DB_solver.get_data_db(db_name, 'form_b_sql')
             print('---- {} ----'.format(form_b))
-            xml = cd('020000190211', form_b)
+            xml = cd(fsrar_id, form_b)
             connectionUTM.send_response(ip=ip, port=port, xml_string=xml)
             for i in range(int(timeout)):
                 print('\r{}/660 сек.'.format(i), end='')

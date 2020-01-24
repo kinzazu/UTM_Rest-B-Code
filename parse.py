@@ -1,5 +1,4 @@
 import xml.etree.ElementTree as ET
-
 from DB_solver import change_have_form
 from log_n_save2file import log_file
 
@@ -26,7 +25,7 @@ def parse_response_rests(xml: str):
     return list_urls
 
 
-def alc_name_n_ect(list_alc: list, tag: str): # возращает имя/справку_Б/количество в зависимости от переменной tag
+def alc_name_n_ect(list_alc: list, tag: str):  # возращает имя/справку_Б/количество в зависимости от переменной tag
     for iteration in range(len(list_alc)):
         if tag == 'rst:InformF2RegId':
             # print('form.b', list_alc[2].text)
@@ -49,6 +48,15 @@ class AlcForm:
         self.alc_name = alc_name_n_ect(list_acl, 'pref: FullName')
         self.alc_code = alc_name_n_ect(list_acl, 'pref:ProductVCode')
         self.alc_form = alc_name_n_ect(list_acl, 'rst:InformF2RegId')
+
+    def __str__(self):
+        return "FORM-B: {}".format(self.alc_code)
+
+    def __repr__(self):
+        try:
+            return self.alc_code
+        except TypeError:
+            print('проблема с GUID заказа')
 
 
 def creating_list_of_class(class_object, stock_list):
@@ -85,31 +93,20 @@ def parse_element_from_list(xml, db_name):   # изменить с xml на url 
         change_have_form(db_name, form_b, 0, None)
 
 
+def parse_rest_list(xml):
+    root = ET.fromstring(xml)
+    print(root[-2].tag, root[-2].text)
+    return root[-2].text
 
 
-# 'xml/sample_with_mark.xml'
-# пример использования, который нужно перенести в мейн.
-# def insert_data(db_name: str, ins_alc_class_list: list):  # если повторить, на заполненных значениях, то данные задублируются, аккуратне!
-#     connect = sqlite3.connect(db_name)                    # сделал условие, вроде избавил его от дублирования.
-#     cursor = connect.cursor()
-#     for data in ins_alc_class_list:
-#         symbol = (data.alc_form,)
-#         print(symbol)
-#         a = input('стоять боятся')
-#         selec = [data.alc_name, data.alc_code, data.alc_form, 0]
-#         # checking = 'SELECT * FROM alc_data WHERE form_b=?'
-#         cursor.execute('SELECT * FROM alc_data WHERE form_b=?', symbol)
-#         print('1', cursor.fetchone())
-#         # print('2',cursor.fetchall())
-#         if cursor.fetchone() is None:
-#             cursor.execute('INSERT INTO alc_data VALUES (?,?,?,?)', selec)
-#         else:
-#             '{} already exist'.format(selec[2])
-#             continue
-
-        # print(cursor.fetchone())
-    # connect.commit()
-
-# create_db('test.db')
+def get_reply_id(xml):
+    root = ET.fromstring(xml)
+    return root[0].text
 
 
+def response_history_b(xml_string):
+    fb_ttn_dict = dict()
+    root = ET.fromstring(xml_string)
+    fb_ttn_dict['form_b'] = root[1][0][0].text
+    fb_ttn_dict['ttn'] = root[1][0][2][0][1].text
+    return fb_ttn_dict

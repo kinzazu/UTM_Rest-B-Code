@@ -17,7 +17,18 @@ def create_db(db_name: str):
     except sqlite3.OperationalError:
         add_column(db_name)
         print('Таблица "алкогольная_форма" уже создана.')
-    connect.close()
+
+
+def create_table_ttn(db_name):
+    connect = sqlite3.connect(db_name)
+    cursor = connect.cursor()
+    try:
+        cursor.execute('''CREATE TABLE ttn_list (ttn text, form_b_FI text, ready integer)''')
+        connect.commit()
+        connect.close()
+    except sqlite3.OperationalError:
+        print('таблица ТТН уже создана или возникла ошибка записи')
+        connect.close()
 
 
 def add_column(db_name):
@@ -29,6 +40,39 @@ def add_column(db_name):
     except sqlite3.OperationalError as e:
         print(e.args[0])
     connect.close()
+
+
+def add_ttn_info(db_name, fb_ttn_dict):
+    connect = sqlite3.connect(db_name)
+    cursor = connect.cursor()
+    symbol = (fb_ttn_dict['ttn'],)
+    selec = [fb_ttn_dict['ttn'], fb_ttn_dict['form_b'],None]
+    tries = 0
+    cursor.execute('SELECT * FROM ttn_list WHERE ttn=?', symbol)
+    if cursor.fetchone() is None:
+        cursor.execute('INSERT INTO ttn_list VALUES (?,?,?)', selec)
+        connect.commit()
+    else:
+        '{} already exist'.format(selec[2])
+    while True:
+
+        try:
+            cursor.execute('SELECT * FROM ttn_list WHERE ttn=?', symbol)
+            if cursor.fetchone() is None:
+                cursor.execute('INSERT INTO ttn_list VALUES (?,?,?)', selec)
+                connect.commit()
+            else:
+                '{} already exist'.format(selec[2])
+            break
+        except sqlite3.OperationalError:
+            tries += 1
+            print('таблица не найдена, попытка создать таблица/столбец')
+            create_table_ttn(db_name)
+            if tries < 10:
+                continue
+            else:
+                print('больше 10 попыток неудачны, программа выключается...')
+                break
 
 
 def check_columns(db_name: str):  # зачем эта функция? пока что она бесполезна 15.01
