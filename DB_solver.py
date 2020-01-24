@@ -46,7 +46,7 @@ def add_ttn_info(db_name, fb_ttn_dict):
     connect = sqlite3.connect(db_name)
     cursor = connect.cursor()
     symbol = (fb_ttn_dict['ttn'],)
-    selec = [fb_ttn_dict['ttn'], fb_ttn_dict['form_b'],None]
+    selec = [fb_ttn_dict['ttn'], fb_ttn_dict['form_b'], 0]
     tries = 0
     cursor.execute('SELECT * FROM ttn_list WHERE ttn=?', symbol)
     if cursor.fetchone() is None:
@@ -114,10 +114,10 @@ def insert_data(db_name: str, ins_alc_class_list: list):    # Вставляет
             a = input("ошибка в бд, нужны проверки... нажмать любую клавишу, чтобы выйти")
 
 
-def change_status(db_name: str, formb: str):
+def change_status(db_name: str, finding_item: str, table_name, column_name):
     connect = sqlite3.connect(db_name)
     cursor = connect.cursor()
-    sql = """UPDATE alc_data SET ready = 1 WHERE form_b='{}'""".format(formb)
+    sql = """UPDATE {0} SET ready = 1 WHERE {1}='{2}'""".format(table_name, column_name, finding_item)
     cursor.execute(sql)
     connect.commit()
 
@@ -142,11 +142,14 @@ def get_data_db(db_name: str, data_type):    # summary_sql и form_b_sql
     cursor = connect.cursor()
     if data_type == 'form_b_sql':
         sql = """SELECT form_b, code FROM alc_data WHERE ready == 0"""
-        cursor.execute(sql)
     elif data_type == 'summary_sql':
         sql = """SELECT count(DISTINCT form_b) FROM alc_data WHERE ready = 0"""
+    elif data_type == 'summary_ttn':
+        sql = """SELECT count(DISTINCT ttn) FROM ttn_list WHERE ready = 0"""
+    elif data_type == 'ttn':
+        sql = '''SELECT ttn from ttn_list WHERE ready == 0'''
     else:
-        print('ты обосрался, кретин, печатать не умеешь?')
+        print('Неизвестный запрос в БД, проверить функцию DB_solver.get_data_db ')
         return None
     cursor.execute(sql)
     a = cursor.fetchone()[0]

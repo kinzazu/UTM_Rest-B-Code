@@ -35,11 +35,11 @@ def main_menu(choose):
             xml = cd(fsrar_id, form_b)
             connectionUTM.send_response(ip=ip, port=port, xml_string=xml)
             for i in range(int(timeout)):
-                print('\r{}/660 сек.'.format(i), end='')
+                print('\r{}/{} сек.'.format(i, timeout), end='')
                 time.sleep(1)
-            DB_solver.change_status(db_name, form_b)
-            if num % 25 == 0:
-                connectionUTM.rest_bcode(parse_response_list(connectionUTM.get_rests_response(ip, port)), db_name)
+            DB_solver.change_status(db_name, form_b, 'acl_data', 'form_b')
+            # if num % 25 == 0:
+            #     connectionUTM.rest_bcode(parse_response_list(connectionUTM.get_rests_response(ip, port)), db_name)
 
     elif choose == 4:
         sys.exit(0)
