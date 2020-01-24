@@ -10,16 +10,13 @@ from xml_create import compilation_doc as cd
 
 
 def main_menu(choose):
-    fsrar_id = lnf.config_file('ini/conf.ini','fsrar_id')
     config_path = 'ini/conf.ini'
+    fsrar_id = lnf.config_file(config_path, 'fsrar_id')
     ip = lnf.config_file(config_path, 'ip')
     port = lnf.config_file(config_path, 'port')
     db_name = f"DB/{lnf.config_file(config_path, 'db_name')}"
     timeout = lnf.config_file(config_path, 'timeout')
-<<<<<<< Updated upstream
-=======
     xml_path = lnf.config_file(config_path, 'xml_file')
->>>>>>> Stashed changes
     if choose == 1:
         list_of_stock = apply_parse(f'xml/{xml_path}')
         class_list = creating_list_of_class(AlcForm, list_of_stock)

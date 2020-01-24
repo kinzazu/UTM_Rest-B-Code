@@ -4,9 +4,6 @@ ini/conf.ini
 Logs/
 *-element.xml
 *-list.xml
-<<<<<<< Updated upstream
 DB/None
 DB/None-journal
-=======
 
->>>>>>> Stashed changes
