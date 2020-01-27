@@ -1,7 +1,7 @@
 import sqlite3
 import sys
 import time
-
+import statistics
 import DB_solver
 import connectionUTM
 import log_n_save2file as lnf
@@ -29,15 +29,26 @@ def main_menu(choose):
 
         sum_columns = DB_solver.get_data_db(db_name, 'summary_sql')
         for num in range(sum_columns):
+            start_time_column = time.time()
             print('\n----{}/{}---- :'.format(num, sum_columns))
             form_b = DB_solver.get_data_db(db_name, 'form_b_sql')
             print('---- {} ----'.format(form_b))
             xml = cd(fsrar_id, form_b)
             connectionUTM.send_response(ip=ip, port=port, xml_string=xml)
+            start_time = time.time()
+            stat_for_time = []
             for i in range(int(timeout)):
+                inner_start_time = time.time()
                 print('\r{}/{} сек.'.format(i, timeout), end='')
                 time.sleep(1)
+                inner_stop_time = time.time() - inner_start_time
+                start_time.append(inner_stop_time)
+            stop_time = start_time - time.time()
             DB_solver.change_status(db_name, form_b, 'acl_data', 'form_b')
+            stop_time_column = time.time() - start_time_column
+            log_file(f'Медианное значение между тиками таймаута = {statistics.median(stat_for_time)}')
+            log_file(f'выполнение цикла timeout : {stop_time}')
+            log_file(f'выполнение полного цикла: {stop_time_column}')
             # if num % 25 == 0:
             #     connectionUTM.rest_bcode(parse_response_list(connectionUTM.get_rests_response(ip, port)), db_name)
 
