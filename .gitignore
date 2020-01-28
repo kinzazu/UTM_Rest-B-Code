@@ -4,5 +4,7 @@ ini/conf.ini
 Logs/
 *-element.xml
 *-list.xml
-DB/None
-DB/None-journal
+DB/
+files/
+test.*
+*.db

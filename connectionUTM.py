@@ -4,11 +4,10 @@ from log_n_save2file import save_xml
 from parse import parse_element_from_list
 
 
-def get_sent_doc(ip_port):
-    url = ip_port
-    xml_container = requests.get(url)
-    print(xml_container.text)
-    return xml_container
+def get_rest_list(ip,port):
+    url = f'http://{ip}:{port}/opt/out/ReplyRests_v2'
+    get_list = requests.get(url)
+    return get_list.text
 
 
 def send_response(ip: str, port: str, xml_string):
@@ -26,6 +25,20 @@ def send_ttn_response(ip: str, port: str, xml_string):
     poster = requests.post(url, files=fake_xml)
     print(poster.status_code)
 
+
+def send_formb_history_response(ip: str, port: str, xml_string):
+    fake_xml = {'xml_file': ('QueryHistoryFormB.xml', xml_string)}
+    url = 'http://{}:{}/opt/in/QueryHistoryFormB'.format(ip, port) #
+    # print(url)
+    poster = requests.post(url, files=fake_xml)
+    # print(poster.status_code)
+    return poster.text
+
+
+def get_link_from_replyid(ip,port,reply_id):
+    url = f'http://{ip}:{port}/opt/out?replyId={reply_id}'
+    poster = requests.post(url)
+    return poster.text
 
 # get_rests_response – запрос всех ответов УТМ на запросы марок по справке Б. Нужно для проверки наличия марок в справке
 # rests_bcode – запрос на конкретный ответ по остаткам марки. Далее парс, -
