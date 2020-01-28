@@ -3,6 +3,7 @@ files/ini/conf.ini
 Logs/
 *-element.xml
 *-list.xml
-files/DB/
-/DB
-
+DB/
+files/
+test.*
+*.db

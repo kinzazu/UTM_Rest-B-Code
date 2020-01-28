@@ -25,17 +25,17 @@ def parse_response_rests(xml: str):
     return list_urls
 
 
-def alc_name_n_ect(list_alc: list, tag: str):  # возращает имя/справку_Б/количество в зависимости от переменной tag
-    for iteration in range(len(list_alc)):
+def class_data_input(parsed_alkogol_list: list, tag: str):  # возращает имя/справку_Б/количество в зависимости от переменной tag
+    for iteration in range(len(parsed_alkogol_list)):
         if tag == 'rst:InformF2RegId':
             # print('form.b', list_alc[2].text)
-            return list_alc[2].text
+            return parsed_alkogol_list[2].text
         elif tag == 'pref: FullName':
             # print('NAME', list_alc[3][0].text)
-            return list_alc[3][0].text
+            return parsed_alkogol_list[3][0].text
         elif tag == 'pref:ProductVCode':
             # print('code V', list_alc[3][5].text)
-            return list_alc[3][5].text
+            return parsed_alkogol_list[3][5].text
 # тэги из хемеэля
     # rst:InformF2RegId - справка Б
     # rst:Product - общий тэг для доступа к следующим
@@ -45,9 +45,9 @@ def alc_name_n_ect(list_alc: list, tag: str):  # возращает имя/сп�
 
 class AlcForm:
     def __init__(self, list_acl):
-        self.alc_name = alc_name_n_ect(list_acl, 'pref: FullName')
-        self.alc_code = alc_name_n_ect(list_acl, 'pref:ProductVCode')
-        self.alc_form = alc_name_n_ect(list_acl, 'rst:InformF2RegId')
+        self.alc_form = class_data_input(list_acl, 'rst:InformF2RegId')
+        self.alc_name = class_data_input(list_acl, 'pref: FullName')
+        self.alc_code = class_data_input(list_acl, 'pref:ProductVCode')
 
     def __str__(self):
         return "FORM-B: {}".format(self.alc_code)
@@ -56,14 +56,32 @@ class AlcForm:
         try:
             return self.alc_code
         except TypeError:
-            print('проблема с GUID заказа')
+            print('проблема с FORM-B запроса')
+
+
+class Only_Form:
+    def __init__(self, form_b):
+        self.alc_form = self.class_form_input(form_b)
+        self.alc_name = 0
+        self.alc_code = 0
+    def class_form_input(self, form_b_object):
+        return form_b_object
+
+    def __str__(self):
+        return "FORM-B: {}".format(self.alc_form)
+
+    def __repr__(self):
+        try:
+            return self.alc_form
+        except TypeError:
+            print('проблема с FORM-B запроса')
 
 
 def creating_list_of_class(class_object, stock_list):
-    alc_list = []
+    instance_list = []
     for x in stock_list:
-        alc_list.append(class_object(x))
-    return alc_list
+        instance_list.append(class_object(x))
+    return instance_list
 
 
 def parse_response_list(xml):  # анлиз для файла со ссылками
