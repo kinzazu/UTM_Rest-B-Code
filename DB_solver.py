@@ -92,13 +92,13 @@ def insert_data(db_name: str, ins_alc_class_list: list):    # Вставляет
         for data in ins_alc_class_list:
             symbol = (data.alc_form,)
 
-            selec = [data.alc_name, data.alc_code, data.alc_form, 0, None]
+            selec = [data.alc_name, data.alc_code, data.alc_form, 0, None, None]
             if selec[1] == '500' or selec[1] == '510 ' or selec[1] is None or selec[1] == '520':
                 continue
             else:
                 cursor.execute('SELECT * FROM alc_data WHERE form_b=?', symbol)
                 if cursor.fetchone() is None:
-                    cursor.execute('INSERT INTO alc_data VALUES (?,?,?,?,?)', selec)
+                    cursor.execute('INSERT INTO alc_data VALUES (?,?,?,?,?,?)', selec)
                 else:
                     '{} already exist'.format(selec[2])
                     continue
