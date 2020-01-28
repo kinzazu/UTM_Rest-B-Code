@@ -47,7 +47,7 @@ def main_menu(choose):
             connectionUTM.send_response(ip=config.ip, port=config.port, xml_string=xml)
             start_time = time.time()
             median = timer(config.timeout)
-            stop_time = start_time - time.time()
+            stop_time = time.time() - start_time
             stop_time_column = time.time() - start_time_column
             lnf.log_file(f'Медианное значение между тиками таймаута = {median}')
             lnf.log_file(f'выполнение цикла timeout : {stop_time}')

@@ -4,10 +4,10 @@ import os
 
 
 class Config:
-    def __init__(self,file_path):
+    def __init__(self, file_path):
         self.ip = self.config_file(file_path, 'ip')
         self.port = self.config_file(file_path, 'port')
-        self.DB_name = self.config_file(file_path, 'db_name')
+        self.DB_name = f"{self.config_file(file_path, 'db_name')}"
         self.timeout = self.config_file(file_path, 'timeout')
         self.xml_name = self.config_file(file_path, 'xml_file')
         self.fsrar_id = self.config_file(file_path, 'fsrar_id')

@@ -5,3 +5,6 @@ Logs/
 *-element.xml
 *-list.xml
 DB/
+files/
+test.*
+*.db
