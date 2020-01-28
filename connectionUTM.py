@@ -1,7 +1,7 @@
 import requests
 
-from log_n_save2file import save_xml
-from parse import parse_element_from_list
+from code.work_with_files.log_n_save2file import save_xml
+from code.parse_files.parse import parse_element_from_list
 
 
 def get_rest_list(ip,port):

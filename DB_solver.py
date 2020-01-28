@@ -1,6 +1,6 @@
 import sqlite3
 
-import log_n_save2file as lnf
+import code.work_with_files.log_n_save2file as lnf
 
 
 def create_db(db_name: str):
@@ -51,9 +51,12 @@ def add_ttn_info(db_name, fb_ttn_dict):
     cursor.execute('SELECT * FROM ttn_list WHERE ttn=?', symbol)
     if cursor.fetchone() is None:
         cursor.execute('INSERT INTO ttn_list VALUES (?,?,?)', selec)
+        lnf.log_file(f'{selec}')
         connect.commit()
     else:
-        '{} already exist'.format(selec[2])
+        event = '{} already exist'.format(selec[2])
+        lnf.log_file(event)
+        print(event)
     while True:
 
         try:
@@ -119,6 +122,7 @@ def change_status(db_name: str, finding_item: str, table_name, column_name):
     cursor = connect.cursor()
     sql = """UPDATE {0} SET ready = 1 WHERE {1}='{2}'""".format(table_name, column_name, finding_item)
     cursor.execute(sql)
+
     connect.commit()
 
 

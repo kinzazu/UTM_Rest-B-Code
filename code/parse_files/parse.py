@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 from DB_solver import change_have_form
-from log_n_save2file import log_file
+from code.work_with_files.log_n_save2file import log_file
 
 
 def apply_parse(url):  # берет XML файл из урл(или файла) и парсит его.

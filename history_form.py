@@ -1,18 +1,18 @@
 from connectionUTM import get_rest_list, send_formb_history_response, get_link_from_replyid, send_ttn_response
-from log_n_save2file import config_file, save_xml
-from parse import parse_rest_list, get_reply_id, response_history_b
-from requests import get, post
+from code.work_with_files.log_n_save2file import config_file, save_xml
+from code.parse_files.parse import parse_rest_list, get_reply_id, response_history_b
+from requests import get
 from xml_create import compile_formb_history, compile_ttn_request
 import time
 import xml.etree.ElementTree as ET
 import DB_solver
 from delete_old import delete_history
 
-ip = config_file('ini/conf.ini', 'ip')
-port = config_file('ini/conf.ini', 'port')
-fsrar_id = config_file('ini/conf.ini', 'fsrar_id')
-db_name = f"DB/{config_file('ini/conf.ini', 'db_name')}"
-timeout = config_file('ini/conf.ini', 'timeout')
+ip = config_file('files/ini/conf.ini', 'ip')
+port = config_file('files/ini/conf.ini', 'port')
+fsrar_id = config_file('files/ini/conf.ini', 'fsrar_id')
+db_name = f"DB/{config_file('files/ini/conf.ini', 'db_name')}"
+timeout = config_file('files/ini/conf.ini', 'timeout')
 
 
 def test_parse(url):

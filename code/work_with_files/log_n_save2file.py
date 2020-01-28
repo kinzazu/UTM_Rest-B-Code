@@ -81,13 +81,11 @@ def save_xml(xml_text, type_file: int):
     time = datetime.datetime.now()
     # print(time)
     if type_file == 1:
-        xml_file_path = 'xml/{}-{}-{} T{}-{}-{}-list.xml'.format(time.year, time.month, time.day,
-                                                                 time.hour, time.day, time.second)
+        xml_file_path = 'xml/log/{}-list.xml'.format(time)
     elif type_file == 2:
-        xml_file_path = 'xml/{}-{}-{} T{}-{}-{}-element.xml'.format(time.year, time.month, time.day,
-                                                                    time.hour, time.day, time.second)
+        xml_file_path = 'xml/log/{}-element.xml'.format(time)
     elif type_file == 3:
-        xml_file_path = 'xml/QueryFormBHistory.xml'
+        xml_file_path = '../../files/xml/QueryFormBHistory.xml'
     else:
         print("ошибка в типе файла для сохранения xml")
     while True:
@@ -95,7 +93,7 @@ def save_xml(xml_text, type_file: int):
             file = open(xml_file_path, 'w')
         except FileNotFoundError:
             path = os.getcwd()
-            os.mkdir('{}\\xml'.format(path))
+            os.mkdir('{}\\files\\xml'.format(path))
             print('created directory')
             continue
         else:

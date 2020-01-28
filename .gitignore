@@ -1,10 +1,8 @@
 __pycache__/
-ini/conf.ini
+files/ini/conf.ini
 Logs/
 *-element.xml
 *-list.xml
-DB/None
-DB/None-journal
-DB/Green_villa.db
 files/DB/
 /DB
+

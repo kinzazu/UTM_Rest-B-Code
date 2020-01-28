@@ -1,7 +1,5 @@
 import requests
-from parse import parse_response_list
-from log_n_save2file import config_file
-import time
+from code.parse_files.parse import parse_response_list
 
 
 def delete_history(ip:str, port:str):

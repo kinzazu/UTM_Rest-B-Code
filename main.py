@@ -4,13 +4,13 @@ import time
 import statistics
 import DB_solver
 import connectionUTM
-import log_n_save2file as lnf
-from parse import *
+import code.work_with_files.log_n_save2file as lnf
+from code.parse_files.parse import *
 from xml_create import compilation_doc as cd
 
 
 def main_menu(choose):
-    config_path = 'ini/conf.ini'
+    config_path = 'files/ini/conf.ini'
     fsrar_id = lnf.config_file(config_path, 'fsrar_id')
     ip = lnf.config_file(config_path, 'ip')
     port = lnf.config_file(config_path, 'port')
@@ -42,13 +42,13 @@ def main_menu(choose):
                 print('\r{}/{} сек.'.format(i, timeout), end='')
                 time.sleep(1)
                 inner_stop_time = time.time() - inner_start_time
-                start_time.append(inner_stop_time)
+                stat_for_time.append(inner_stop_time)
             stop_time = start_time - time.time()
             DB_solver.change_status(db_name, form_b, 'acl_data', 'form_b')
             stop_time_column = time.time() - start_time_column
-            log_file(f'Медианное значение между тиками таймаута = {statistics.median(stat_for_time)}')
-            log_file(f'выполнение цикла timeout : {stop_time}')
-            log_file(f'выполнение полного цикла: {stop_time_column}')
+            lnf.log_file(f'Медианное значение между тиками таймаута = {statistics.median(stat_for_time)}')
+            lnf.log_file(f'выполнение цикла timeout : {stop_time}')
+            lnf.log_file(f'выполнение полного цикла: {stop_time_column}')
             # if num % 25 == 0:
             #     connectionUTM.rest_bcode(parse_response_list(connectionUTM.get_rests_response(ip, port)), db_name)
 

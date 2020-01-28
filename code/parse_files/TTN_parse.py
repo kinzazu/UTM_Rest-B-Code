@@ -27,7 +27,7 @@ def parse_ttn(file_path: str, x_day: str):
     return ttn_data
 
 
-listik = parse_ttn('xml/TTN.xml', '2019-12-19')
+listik = parse_ttn('files/xml/TTN.xml', '2019-12-19')
 counter = 0
 for ttn in listik:
     counter += 1
