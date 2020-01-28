@@ -4,8 +4,8 @@ import time
 import statistics
 import DB_solver
 import connectionUTM
-import log_n_save2file as lnf
-from parse import *
+import code.work_with_files.log_n_save2file as lnf
+from code.parse_files.parse import *
 from xml_create import compilation_doc as cd
 
 
@@ -53,8 +53,10 @@ def main_menu(choose):
             lnf.log_file(f'выполнение цикла timeout : {stop_time}')
             lnf.log_file(f'выполнение полного цикла: {stop_time_column}')
             DB_solver.change_status(config.DB_name, form_b)
-            if num % 25 == 0:
-                connectionUTM.rest_bcode(parse_response_list(connectionUTM.get_rests_response(config.ip, config.port)), config.DB_name)
+            # if num % 25 == 0:
+            #     connectionUTM.rest_bcode(parse_response_list(connectionUTM.get_rests_response(config.ip, config.port))
+            #     , config.DB_name)
+
 
     elif choose == 4:
         sys.exit(0)

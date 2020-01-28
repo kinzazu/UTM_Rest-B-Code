@@ -1,6 +1,5 @@
 __pycache__/
-ini/conf.ini
-4_test.py
+files/ini/conf.ini
 Logs/
 *-element.xml
 *-list.xml
