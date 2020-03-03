@@ -1,4 +1,5 @@
 __pycache__/
+<<<<<<< Updated upstream
 ini/conf.ini
 4_test.py
 Logs/
@@ -8,3 +9,12 @@ DB/
 files/
 test.*
 *.db
+=======
+my_files/ini/conf.ini
+Logs/
+*-element.xml
+*-list.xml
+my_files/*
+/DB_files_old
+test.*
+>>>>>>> Stashed changes

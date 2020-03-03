@@ -2,8 +2,8 @@ import datetime
 import time
 import xml.etree.ElementTree as ET
 
-from connectionUTM import send_ttn_response
-from xml_create import compile_ttn_request
+from http_work.connectionUTM import send_ttn_response
+from parse_files.xml_create import compile_ttn_request
 
 
 def parse_ttn(file_path: str, x_day: str):
@@ -28,7 +28,7 @@ def parse_ttn(file_path: str, x_day: str):
     return ttn_data
 
 
-listik = parse_ttn('xml/TTN.xml', '2019-12-19')
+listik = parse_ttn('my_files/xml/TTN.xml', '2019-12-19')
 counter = 0
 for ttn in listik:
     counter += 1
