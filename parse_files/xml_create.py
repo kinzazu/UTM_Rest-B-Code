@@ -70,3 +70,5 @@ def compile_formb_history(form_b, fsrar_id):
     document: bytes = '<?xml version="1.0" encoding="UTF-8"?>'.encode('utf-8')
     document += message
     return document
+
+
