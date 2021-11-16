@@ -76,7 +76,7 @@ def create_log_file():
             break
         except FileNotFoundError:
             path = os.getcwd()
-            os.mkdir('{}\\Logs'.format(path))
+            os.mkdir(f'{path}\\Logs')
             print('created directory')
             continue
         else:
@@ -108,7 +108,7 @@ def save_xml(xml_text, type_file: int):
             file = open(xml_file_path, 'w')
         except FileNotFoundError:
             path = os.getcwd()
-            os.mkdir('{}\\xml'.format(path))
+            os.mkdir(f'{path}\\xml')
             print('created directory')
             continue
         else:
